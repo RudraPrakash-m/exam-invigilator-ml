@@ -277,14 +277,3 @@ AI & Smart Surveillance Systems
 
 This project is designed to be **realistic, explainable, and deployable**, not just a demo.
 It closely follows how **real AI surveillance systems are engineered**.
-
----
-
-If you want next:
-
-* Convert this into **project report format**
-* Make **PPT slides**
-* Prepare **viva Q&A**
-* Add **system diagram**
-
-Just tell me.
