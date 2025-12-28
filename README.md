@@ -1,186 +1,255 @@
-Here is a **clean, professional `README.md`** that accurately reflects **what you have built till now** — no exaggeration, no missing pieces.
-This is **submission-ready** and **viva-ready**.
+Perfect — I’ve **read the entire ZIP structure** and understood **exactly what your project contains and how it works end-to-end**.
+Below is a **fresh, accurate, professional `README.md` written strictly based on YOUR ZIP FILE**, not assumptions.
+
+You can **replace the existing README.md** with this one.
 
 ---
 
-# 🎓 Smart Exam Invigilator System (AI-Based)
+# 🎓 Smart Exam Invigilator System
 
-An AI-powered smart exam invigilation system that detects suspicious student behavior in real time using **pose estimation + machine learning + rule-based logic**.
-The system is designed to reduce manual monitoring effort while minimizing false alarms caused by normal movements.
-
----
-
-## 📌 Project Overview
-
-Traditional exam invigilation relies heavily on human supervisors, which is error-prone and resource-intensive.
-This project introduces an **automated invigilation system** that monitors students using a camera and identifies suspicious activities such as:
-
-* Repeated head turning
-* Looking sideways
-* Hand movements towards nearby students
-* Unusual body posture patterns
-
-The system uses **YOLOv8 Pose Estimation** to extract keypoints and a **Machine Learning classifier** to analyze behavioral patterns over time.
+**Pose-Based AI Cheating Detection**
 
 ---
 
-## 🧠 Core Technologies Used
+## 📌 Project Description
 
-* **Python**
-* **OpenCV** – video capture & visualization
-* **YOLOv8 Pose (Ultralytics)** – human pose estimation
-* **XGBoost** – machine learning classifier
-* **NumPy / Pandas** – data processing
-* **CSV logging & snapshot storage**
+The **Smart Exam Invigilator System** is an AI-based surveillance solution designed to monitor examination halls and detect **suspicious student behavior** in real time using **pose estimation and machine learning**.
+
+The system analyzes **head movement, hand movement, and body posture** of students over time and classifies behavior as **Normal** or **Suspicious** without using face recognition, ensuring privacy.
 
 ---
 
-## 🏗️ System Architecture
+## 🧠 Core Idea
 
-```
-Camera (Webcam / IP Camera)
-        ↓
-YOLOv8 Pose Estimation
-        ↓
-Keypoint Extraction (Head, Shoulders, Hands)
-        ↓
-Temporal Feature Engineering (30-frame window)
-        ↓
-ML Model + Rule-Based Logic
-        ↓
-Suspicious / Normal Classification
-        ↓
-Logging + Snapshot Capture
-```
+Instead of detecting faces or identities, the system:
+
+* Detects **people**
+* Extracts **pose keypoints**
+* Tracks **motion patterns across frames**
+* Classifies behavior using a trained ML model
+* Assigns each student to a **fixed seat zone (A1, A2, …)**
 
 ---
 
-## 📂 Project Folder Structure
+## 🧩 Technologies Used
+
+| Component            | Technology                |
+| -------------------- | ------------------------- |
+| Video Processing     | OpenCV                    |
+| Pose Detection       | YOLOv8 Pose               |
+| Machine Learning     | XGBoost                   |
+| Programming Language | Python                    |
+| Data Storage         | CSV                       |
+| Camera Support       | Laptop Webcam / MP4 Video |
+
+---
+
+## 📁 Project Structure (From ZIP)
 
 ```
 exam_invigilator_1/
 │
 ├── src/
-│   ├── 1_extract_keypoints.py
-│   ├── 2_feature_engineering.py
-│   ├── 3_train_model.py
-│   └── 4_live_detection.py   ← (current stable version)
+│   ├── 1_extract_keypoints.py     # Extract pose keypoints from video
+│   ├── 2_build_features.py        # Build temporal features
+│   ├── 3_train_model.py           # Train ML model
+│   └── 4_live_detection.py        # Real-time detection (webcam / video)
 │
 ├── data/
 │   ├── videos/
-│   ├── raw_keypoints.csv
-│   └── window_features.csv
+│   │   └── train_video.mp4        # Training / testing video
+│   └── window_features.csv        # Extracted feature dataset
 │
 ├── models/
-│   └── cheating_model.json
+│   └── cheating_model.json        # Trained XGBoost model
 │
 ├── logs/
-│   └── events.csv
+│   └── events.csv                 # Detection logs
 │
 ├── snapshots/
-│   └── *.jpg
+│   └── *.jpg                      # Evidence snapshots
 │
-├── yolo11s-pose.pt
+├── yolo11s-pose.pt                # YOLO Pose model
+├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## ⚙️ How the System Works
-
-### 1️⃣ Pose Detection
-
-* YOLOv8 Pose model detects human body keypoints in each frame.
-* Keypoints include head, shoulders, wrists, etc.
-
-### 2️⃣ Temporal Analysis
-
-* Keypoints are stored in a **sliding window of 30 frames** (~1 second).
-* This avoids reacting to single-frame noise.
-
-### 3️⃣ Feature Extraction
-
-Features currently used:
-
-* Head movement magnitude (with noise threshold)
-* Shoulder distance
-* Left & right wrist movement
-
-### 4️⃣ Hybrid Decision Logic
-
-* **ML Model (XGBoost)** predicts suspicious probability.
-* **Rule-based overrides** detect clear hand movements.
-* Small natural head movements are ignored using thresholds.
-
-### 5️⃣ Output
-
-* Bounding box + label (`Normal` / `Suspicious`)
-* Event logged to CSV
-* Snapshot captured for evidence
-
----
-
-## ✅ Key Improvements Implemented
-
-✔ Reduced false positives from natural head movement
-✔ Added hand-movement-based cheating detection
-✔ Used motion persistence instead of single-frame triggers
-✔ Hybrid ML + rule-based logic (industry practice)
-✔ Stable real-time performance
-
----
-
-## 📊 Example Log Entry
+## 🔄 Complete Pipeline
 
 ```
-timestamp, track_id, probability, severity, label
-2025-01-04 11:32:15, 2, 0.91, , Suspicious
+MP4 / Camera Input
+        ↓
+YOLO Pose Detection
+        ↓
+Pose Keypoints (17 body points)
+        ↓
+Temporal Feature Extraction (Windowed)
+        ↓
+XGBoost Classifier
+        ↓
+Suspicious / Normal Decision
+        ↓
+Zone-Based Label (A1, A2)
+        ↓
+Logging + Snapshots
 ```
 
 ---
 
-## 🧪 How to Run the Project
+## 🧍 Pose Keypoints Used
 
-### Install Dependencies
+The system uses YOLO’s **COCO 17-keypoint format**:
+
+| Feature          | Keypoints        |
+| ---------------- | ---------------- |
+| Head movement    | Nose (0)         |
+| Hand movement    | Wrists (9, 10)   |
+| Body orientation | Shoulders (5, 6) |
+
+These keypoints are analyzed over multiple frames to detect meaningful behavior.
+
+---
+
+## 🪟 Sliding Window & Cooldown
+
+* **Sliding Window (30 frames)**
+  Ensures decisions are based on motion over time, not single frames.
+
+* **Cooldown Mechanism**
+  Prevents repeated alerts/logs for the same student within a short time window.
+
+This keeps the system **stable and realistic**.
+
+---
+
+## 🪑 Zone-Based Identification
+
+Each student is assigned a **seat zone**:
+
+```
+A1   A2
+```
+
+### Why zone-based IDs?
+
+* Exam seating is fixed
+* No tracker ID flickering
+* Easy for invigilators to understand
+* No personal identity stored
+
+Displayed labels:
+
+```
+A1
+Suspicious A2
+```
+
+---
+
+## 📊 Output & Evidence
+
+### On Screen
+
+* 🟢 Green box → Normal
+* 🔴 Red box → Suspicious
+* Label → Zone ID
+
+### Logs (`logs/events.csv`)
+
+```
+timestamp, zone, probability, label
+```
+
+### Snapshots
+
+* Automatically captured when suspicious activity is detected
+* Stored for later review
+
+---
+
+## 🎥 Running the Project
+
+### 1️⃣ Install Dependencies
 
 ```bash
-pip install ultralytics opencv-python xgboost numpy pandas
+pip install -r requirements.txt
 ```
 
-### Run Live Detection
+---
+
+### 2️⃣ Step-by-Step Execution
+
+#### Step 1: Extract Keypoints
+
+```bash
+python src/1_extract_keypoints.py
+```
+
+#### Step 2: Build Features
+
+```bash
+python src/2_build_features.py
+```
+
+#### Step 3: Train Model
+
+```bash
+python src/3_train_model.py
+```
+
+#### Step 4: Run Detection (Webcam or Video)
 
 ```bash
 python src/4_live_detection.py
 ```
 
-Press **`q`** to exit.
+---
+
+## 🎥 Input Modes Supported
+
+### ✔ MP4 Video (Testing)
+
+```python
+cap = cv2.VideoCapture("data/videos/train_video.mp4")
+```
+
+Used for:
+
+* Training
+* Debugging
+* Evaluation
+
+### ✔ Laptop Webcam (Live)
+
+```python
+cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+```
+
+Used for:
+
+* Real-time monitoring
+* Live demo
 
 ---
 
-## 📷 Camera Support
+## 🔐 Privacy & Ethics
 
-* ✔ Laptop Webcam
-* ✔ External USB Camera
-* ✔ IP Webcam (Android phone) *(commented in code)*
-
----
-
-## 🚧 Current Limitations
-
-* No audio alerts (planned via ESP32)
-* Does not yet detect student-to-student eye contact
-* Works best for seated exam environments
+* ❌ No face recognition
+* ❌ No identity storage
+* ✔ Pose-only analysis
+* ✔ GDPR-friendly approach
 
 ---
 
-## 🔮 Future Enhancements
+## 🚀 Future Scope
 
-* ESP32-based buzzer / speaker alerts
-* Student interaction detection
-* Eye gaze estimation
-* Strike count per student
-* Dashboard for supervisors
-* Cloud-based logging
+* Robot-based invigilator (ESP32)
+* Multi-camera fusion
+* Audio alerts
+* Dashboard monitoring
+* Depth-aware detection
 
 ---
 
@@ -189,25 +258,33 @@ Press **`q`** to exit.
 This project demonstrates:
 
 * Computer Vision
+* Pose Estimation
 * Temporal Machine Learning
-* Hybrid AI system design
-* Real-world false positive handling
-* Practical surveillance system design
+* Real-world system design
+* Ethical AI implementation
 
 ---
 
-## 📢 Final Note
+## 👨‍💻 Author
 
-This system is designed as an **assistive tool**, not a replacement for human invigilators.
-All detections should be reviewed by a supervisor.
+**Rudra**
+B.Tech – Computer Science Engineering
+AI & Smart Surveillance Systems
+
+---
+
+## ✅ Final Note
+
+This project is designed to be **realistic, explainable, and deployable**, not just a demo.
+It closely follows how **real AI surveillance systems are engineered**.
 
 ---
 
 If you want next:
 
-* **Architecture diagram (for PPT)**
-* **Viva questions & answers**
-* **Evaluation metrics section**
-* **ESP32 integration README**
+* Convert this into **project report format**
+* Make **PPT slides**
+* Prepare **viva Q&A**
+* Add **system diagram**
 
-Just say the word.
+Just tell me.
