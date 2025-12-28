@@ -1,10 +1,3 @@
-Perfect — I’ve **read the entire ZIP structure** and understood **exactly what your project contains and how it works end-to-end**.
-Below is a **fresh, accurate, professional `README.md` written strictly based on YOUR ZIP FILE**, not assumptions.
-
-You can **replace the existing README.md** with this one.
-
----
-
 # 🎓 Smart Exam Invigilator System
 
 **Pose-Based AI Cheating Detection**
